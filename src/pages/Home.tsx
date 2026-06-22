@@ -15,7 +15,7 @@ import { useLang } from '../context/LangContext'
 import { fetchSiteImages, fetchProducts } from '../lib/supabase'
 import { defaultInquiryMessage, openWhatsApp } from '../lib/whatsapp'
 import type { Product, ProductCategory, SiteImage } from '../types'
-import { DEFAULT_IMAGES, DEFAULT_PRODUCTS } from '../data/defaults'
+import { DEFAULT_IMAGES, DEFAULT_PRODUCTS, SITE_NAME } from '../data/defaults'
 
 export default function Home() {
   const { lang, setLang } = useLang()
@@ -53,7 +53,7 @@ export default function Home() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-cream">
-        <div className="font-serif text-2xl text-warm-dark animate-pulse">Lumière</div>
+        <div className="font-serif text-2xl text-warm-dark animate-pulse">{SITE_NAME}</div>
       </div>
     )
   }

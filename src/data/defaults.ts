@@ -1,4 +1,5 @@
 import type { Product, SiteImage, ProductCategory } from '../types'
+import alibabaData from './alibaba-products.json'
 
 /** 首页动态背景（温馨烛光视频 + 封面图） */
 export const HERO_VIDEO = '/videos/hero-candle.mp4'
@@ -16,13 +17,13 @@ export const HERO_CONTENT = {
 export const HERO_SLIDES = [HERO_POSTER, '/images/hero-2.jpg']
 
 export const COMPANY = {
-  name: { zh: 'Lumière 香氛科技', en: 'Lumière Aroma Tech' },
+  name: { zh: 'Molly Chenguang 晨光科技', en: 'Molly Chenguang Technology' },
   years: 4,
-  location: { zh: '中国 · 四川', en: 'Sichuan, China' },
+  location: { zh: '中国 · 四川成都', en: 'Chengdu, Sichuan, China' },
   type: { zh: '跨境香氛供应商', en: 'Cross-border Fragrance Supplier' },
   categories: {
-    zh: ['香薰蜡烛', '无火香薰', '礼盒套装', '车载香氛'],
-    en: ['Scented Candles', 'Reed Diffuser', 'Gift Sets', 'Car Freshener'],
+    zh: ['无火香薰', '香薰蜡烛', '车载香氛', '香氛礼盒', '空气清新'],
+    en: ['Reed Diffuser', 'Scented Candles', 'Car Freshener', 'Fragrance Gift Set', 'Air Freshener'],
   },
   whatsapp: '19882990195',
   responseTime: { zh: 'WhatsApp 快速回复', en: 'Quick reply on WhatsApp' },
@@ -194,7 +195,7 @@ const SPEC_WEIGHT = {
   value: { zh: '200g', en: '200g' },
 }
 
-export const DEFAULT_PRODUCTS: Product[] = [
+const LEGACY_PRODUCTS: Product[] = [
   {
     id: 'p1',
     name: '暮光玫瑰',
@@ -332,10 +333,15 @@ export const DEFAULT_PRODUCTS: Product[] = [
   },
 ]
 
-export const SITE_NAME = 'Lumière'
+export const DEFAULT_PRODUCTS: Product[] =
+  alibabaData.products?.length > 0
+    ? (alibabaData.products as Product[])
+    : LEGACY_PRODUCTS
+
+export const SITE_NAME = 'Molly Chenguang'
 export const SITE_TAGLINE = {
-  zh: '跨境蜡烛 · 香薰',
-  en: 'Candles & Aromatherapy',
+  zh: '蜡烛 · 香薰 · 跨境供应',
+  en: 'Candles & Aromatherapy · B2B',
 }
 
 export const CERTIFICATES = [

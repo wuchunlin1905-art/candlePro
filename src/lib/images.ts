@@ -13,11 +13,12 @@ const LEGACY_IMAGE_MAP: Record<string, string> = {
   '/images/hero-warm-2.jpg': '/images/hero-2.jpg',
 }
 
-/** 本地路径或 Supabase 存储的图片视为可靠 */
+/** 本地路径、Supabase 存储、阿里巴巴 CDN 图片视为可靠 */
 export function isReliableImageUrl(url: string | undefined): boolean {
   if (!url?.trim()) return false
   if (url.startsWith('/')) return true
   if (url.includes('.supabase.co/storage')) return true
+  if (url.includes('alicdn.com')) return true
   return false
 }
 
@@ -102,7 +103,9 @@ export async function filterLoadableProducts(
   const checks = await Promise.all(
     products.map(async (p) => ({
       p,
-      ok: await checkImageLoadable(p.image_url),
+      ok: isReliableImageUrl(p.image_url)
+        ? true
+        : await checkImageLoadable(p.image_url),
     }))
   )
   return checks.filter((c) => c.ok).map((c) => c.p)

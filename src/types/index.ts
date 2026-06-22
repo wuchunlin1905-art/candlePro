@@ -31,6 +31,7 @@ export interface Product {
   specs?: ProductSpec[]
   sort_order: number
   visible: boolean
+  source_url?: string
 }
 
 export interface Certificate {

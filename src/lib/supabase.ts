@@ -51,6 +51,13 @@ export async function fetchProducts(): Promise<Product[]> {
   }
 
   const merged = mergeProducts(data as Product[])
+  const remoteLooksLegacy =
+    merged.length < 20 && !merged.some((p) => p.id.startsWith('ali-'))
+
+  if (remoteLooksLegacy && DEFAULT_PRODUCTS.length > merged.length) {
+    return filterLoadableProducts(DEFAULT_PRODUCTS)
+  }
+
   const loadable = await filterLoadableProducts(merged)
   return loadable.length > 0 ? loadable : filterLoadableProducts(DEFAULT_PRODUCTS)
 }

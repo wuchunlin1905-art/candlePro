@@ -149,7 +149,18 @@ export default function ProductDetail() {
                 </div>
               )}
 
-              <div className="flex flex-col sm:flex-row gap-3">
+              {product.source_url && (
+                <a
+                  href={product.source_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block mt-4 text-xs text-charcoal-light hover:text-gold underline"
+                >
+                  {lang === 'zh' ? '查看 Alibaba 原页 →' : 'View on Alibaba →'}
+                </a>
+              )}
+
+              <div className="flex flex-col sm:flex-row gap-3 mt-6">
                 <button
                   onClick={() => contactWhatsApp()}
                   className="flex-1 py-3 bg-[#25D366] text-white text-sm tracking-widest uppercase hover:bg-[#1da851] transition-colors inline-flex items-center justify-center gap-2"

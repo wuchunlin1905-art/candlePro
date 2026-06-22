@@ -1,9 +1,11 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { Product, Lang, ProductCategory } from '../types'
 import { DEFAULT_MOQ, PRODUCT_CATEGORIES } from '../data/defaults'
 import { filterProductsBySearch } from '../lib/search'
 import SafeImage from './SafeImage'
+
+const PAGE_SIZE = 24
 
 interface ProductsProps {
   products: Product[]
@@ -21,6 +23,7 @@ export default function Products({
   onContact,
 }: ProductsProps) {
   const [hiddenIds, setHiddenIds] = useState<Set<string>>(new Set())
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
 
   const filtered = useMemo(() => {
     const visible = products.filter(
@@ -28,6 +31,13 @@ export default function Products({
     )
     return filterProductsBySearch(visible, search)
   }, [products, category, search, hiddenIds])
+
+  const shown = filtered.slice(0, visibleCount)
+  const hasMore = visibleCount < filtered.length
+
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE)
+  }, [category, search])
 
   const hideProduct = (id: string) => {
     setHiddenIds((prev) => new Set(prev).add(id))
@@ -75,8 +85,9 @@ export default function Products({
             )}
           </div>
         ) : (
+          <>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
-            {filtered.map((product) => (
+            {shown.map((product) => (
               <ProductCard
                 key={product.id}
                 product={product}
@@ -89,6 +100,20 @@ export default function Products({
               />
             ))}
           </div>
+          {hasMore && (
+            <div className="text-center mt-10">
+              <button
+                type="button"
+                onClick={() => setVisibleCount((n) => n + PAGE_SIZE)}
+                className="px-8 py-3 border border-charcoal/20 text-charcoal text-sm tracking-widest uppercase hover:border-gold hover:text-gold transition-colors"
+              >
+                {lang === 'zh'
+                  ? `加载更多（还有 ${filtered.length - visibleCount} 款）`
+                  : `Load more (${filtered.length - visibleCount} left)`}
+              </button>
+            </div>
+          )}
+          </>
         )}
       </div>
     </section>
@@ -133,7 +158,7 @@ function ProductCard({
         )}
       </Link>
       <div className="p-4 md:p-5">
-        <h3 className="font-serif text-lg text-charcoal mb-1 line-clamp-1">
+        <h3 className="font-serif text-lg text-charcoal mb-1 line-clamp-2 min-h-[3.5rem]">
           {lang === 'zh' ? product.name : product.name_en}
         </h3>
         <p className="text-xs text-charcoal-light mb-3 line-clamp-2 min-h-[2rem]">
